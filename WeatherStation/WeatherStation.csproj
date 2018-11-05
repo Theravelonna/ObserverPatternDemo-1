@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ObserverPatternDemo">
+      <HintPath>..\..\ObserverPatternDemo\ObserverPatternDemo\bin\Debug\ObserverPatternDemo.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,12 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ObserverPatternDemo\ObserverPatternDemo.csproj">
-      <Project>{3552d999-ccb9-4177-9445-5f1a71864792}</Project>
-      <Name>ObserverPatternDemo</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
