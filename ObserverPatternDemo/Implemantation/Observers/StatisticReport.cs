@@ -4,6 +4,9 @@ using ObserverPatternDemo.Implemantation.Observable;
 
 namespace ObserverPatternDemo.Implemantation.Observers
 {
+    /// <summary>
+    /// Class with statistic.
+    /// </summary>
     public class StatisticReport : IObserver<WeatherInfo>
     {
         private List<WeatherInfo> statistic;
@@ -12,11 +15,20 @@ namespace ObserverPatternDemo.Implemantation.Observers
         private int averagePressure;
         private IObservable<WeatherInfo> observer;
 
+        /// <summary see cref="StatisticReport">
+        /// Constructor of class without parametrs.
+        /// </summary>
         public StatisticReport()
         {
             statistic = new List<WeatherInfo>();
         }
 
+        /// <summary see cref="StatisticReport">
+        /// Constructor of class with parametrs.
+        /// </summary>
+        /// <param name="observer">
+        /// The observer.
+        /// </param>
         public StatisticReport(IObservable<WeatherInfo> observer) : this()
         {
             if (ReferenceEquals(observer, null))
@@ -28,6 +40,15 @@ namespace ObserverPatternDemo.Implemantation.Observers
             observer.Register(this);
         }
 
+        /// <summary>
+        /// Method updates data in statistic.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="info">
+        /// A new info.
+        /// </param>
         public void Update(IObservable<WeatherInfo> sender, WeatherInfo info)
         {
             statistic.Add(info);
@@ -35,10 +56,15 @@ namespace ObserverPatternDemo.Implemantation.Observers
             CountAverage();
         }
 
-        public void ShowData()
+        /// <summary>
+        /// Method shows current values.
+        /// </summary>
+        /// <returns>
+        /// <see cref="string"/> is data.
+        /// </returns>
+        public string ShowData()
         {
-            string data = $"Average temperature: {averageTemperature}, average humidity: {averageHumidity}, average pressure: {averagePressure}";
-            Console.WriteLine(data);
+            return $"Average temperature: {averageTemperature}, average humidity: {averageHumidity}, average pressure: {averagePressure}";
         }
 
         #region Private methods
