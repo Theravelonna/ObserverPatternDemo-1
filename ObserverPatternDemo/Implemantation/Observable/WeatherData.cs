@@ -12,6 +12,7 @@ namespace ObserverPatternDemo.Implemantation.Observable
         private Random sensorTemperature;
         private Random sensorHumidity;
         private Random sensorPressure;
+        private WeatherInfo weatherInfo;
         private List<IObserver<WeatherInfo>> observers;
 
         /// <summary see cref="WeatherData">
@@ -20,6 +21,7 @@ namespace ObserverPatternDemo.Implemantation.Observable
         public WeatherData()
         {
             observers = new List<IObserver<WeatherInfo>>();
+            weatherInfo = new WeatherInfo();
             sensorTemperature = new Random();
             sensorHumidity = new Random();
             sensorPressure = new Random();
@@ -31,9 +33,14 @@ namespace ObserverPatternDemo.Implemantation.Observable
         /// <param name="time">
         /// Runtime.
         /// </param>
-        public void ShowChanging(int time)
+        public void Start(int countIteration)
         {
-            Timer work = new Timer(Random, null, 0, time);
+            int count = 0;
+            while (count < countIteration)
+            {
+                Random();
+                count++;
+            }
         }
 
         /// <summary>
@@ -55,7 +62,10 @@ namespace ObserverPatternDemo.Implemantation.Observable
         /// </param>
         public void Register(IObserver<WeatherInfo> observer)
         {
-            observers.Add(observer);
+            if (!observers.Contains(observer))
+            {
+                observers.Add(observer);
+            }
         }
 
         #region Private methods
@@ -83,10 +93,8 @@ namespace ObserverPatternDemo.Implemantation.Observable
             Unregister(observer);
         }
 
-        private void Random(object info)
+        private void Random()
         {
-            WeatherInfo weatherInfo = (WeatherInfo)info;
-
             weatherInfo.Temperature = sensorTemperature.Next(-40, 40);
             weatherInfo.Humidity = sensorHumidity.Next(0, 100);
             weatherInfo.Pressure = sensorPressure.Next(10, 40);

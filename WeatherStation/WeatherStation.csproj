@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ObserverPatternDemo">
-      <HintPath>..\..\ObserverPatternDemo\ObserverPatternDemo\bin\Debug\ObserverPatternDemo.dll</HintPath>
+      <HintPath>..\ObserverPatternDemo\bin\Release\ObserverPatternDemo.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

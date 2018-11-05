@@ -10,10 +10,22 @@ namespace ObserverPatternDemo.Implemantation.Observers
         private int averageTemperature;
         private int averageHumidity;
         private int averagePressure;
+        private IObservable<WeatherInfo> observer;
 
         public StatisticReport()
         {
             statistic = new List<WeatherInfo>();
+        }
+
+        public StatisticReport(IObservable<WeatherInfo> observer) : this()
+        {
+            if (ReferenceEquals(observer, null))
+            {
+                throw new ArgumentNullException($"The {nameof(observer)} is null!");
+            }
+
+            this.observer = observer;
+            observer.Register(this);
         }
 
         public void Update(IObservable<WeatherInfo> sender, WeatherInfo info)

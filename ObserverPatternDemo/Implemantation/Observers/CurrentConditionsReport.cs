@@ -1,4 +1,5 @@
 ﻿using ObserverPatternDemo.Implemantation.Observable;
+using System;
 
 namespace ObserverPatternDemo.Implemantation.Observers
 {
@@ -8,6 +9,7 @@ namespace ObserverPatternDemo.Implemantation.Observers
     public class CurrentConditionsReport : IObserver<WeatherInfo>
     {
         private WeatherInfo info;
+        private IObservable<WeatherInfo> observer;
 
         /// <summary see cref="CurrentConditionsReport">
         /// Constructor of class.
@@ -15,6 +17,17 @@ namespace ObserverPatternDemo.Implemantation.Observers
         public CurrentConditionsReport()
         {
             info = new WeatherInfo();
+        }
+
+        public CurrentConditionsReport(IObservable<WeatherInfo> observer) : this()
+        {
+            if (ReferenceEquals(observer, null))
+            {
+                throw new ArgumentNullException($"The {nameof(observer)} is null!");
+            }
+
+            this.observer = observer;
+            observer.Register(this);
         }
 
         /// <summary>
