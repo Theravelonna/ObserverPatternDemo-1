@@ -12,10 +12,9 @@ namespace WeatherStation
             StatisticReport statisticReport = new StatisticReport(weatherData);
             CurrentConditionsReport currentConditionsReport = new CurrentConditionsReport(weatherData);
             weatherData.Start(3);
-            string data1 = statisticReport.ShowData();
-            string data2 = currentConditionsReport.ShowData();
-            Console.WriteLine(data1);
-            Console.WriteLine(data2);
+            Console.WriteLine(statisticReport.ShowData());
+            Console.WriteLine(currentConditionsReport.ShowData());
+            Console.ReadKey();
         }
     }
 }
