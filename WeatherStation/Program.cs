@@ -11,7 +11,7 @@ namespace WeatherStation
             WeatherData weatherData = new WeatherData();
             StatisticReport statisticReport = new StatisticReport(weatherData);
             CurrentConditionsReport currentConditionsReport = new CurrentConditionsReport(weatherData);
-            weatherData.Start(3000);
+            weatherData.Start();
             Console.ReadKey();
         }
     }

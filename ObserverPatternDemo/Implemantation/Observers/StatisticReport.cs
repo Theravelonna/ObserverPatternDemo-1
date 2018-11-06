@@ -27,14 +27,11 @@ namespace ObserverPatternDemo.Implemantation.Observers
         /// <param name="observer">
         /// The observer.
         /// </param>
-        public StatisticReport(IObservable<WeatherInfo> observer) : this()
+        public StatisticReport(IObservable<WeatherInfo> sender) : this()
         {
-            if (ReferenceEquals(observer, null))
-            {
-                throw new ArgumentNullException($"The {nameof(observer)} is null!");
-            }
-            
-            observer.Register(this);
+            ValidationData(sender);
+
+            sender.Register(this);
         }
         
         /// <summary>
@@ -48,6 +45,8 @@ namespace ObserverPatternDemo.Implemantation.Observers
         /// </param>
         public void Update(IObservable<WeatherInfo> sender, WeatherInfo info)
         {
+            ValidationData(sender, info);
+
             WeatherInfo newInfo = new WeatherInfo
             {
                 Temperature = info.Temperature,
@@ -91,11 +90,35 @@ namespace ObserverPatternDemo.Implemantation.Observers
         private int Sum(ValueForSum valueForSum)
         {
             int sum = 0;
+
             foreach (var value in statistic)
             {
                 sum += valueForSum(value);
             }
+
             return sum;
+        }
+
+        private void ValidationData(IObservable<WeatherInfo> sender)
+        {
+            if (ReferenceEquals(sender, null))
+            {
+                throw new ArgumentNullException($"The {nameof(sender)} is null!");
+            }
+        }
+
+        private void ValidationData(WeatherInfo info)
+        {
+            if (ReferenceEquals(info, null))
+            {
+                throw new ArgumentNullException($"The {nameof(info)} is null!");
+            }
+        }
+
+        private void ValidationData(IObservable<WeatherInfo> sender, WeatherInfo info)
+        {
+            ValidationData(sender);
+            ValidationData(info);
         }
         #endregion
     }

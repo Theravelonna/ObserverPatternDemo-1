@@ -13,7 +13,7 @@ namespace ObserverPatternDemo.Implemantation.Observable
         private WeatherInfo weatherInfo;
         private List<IObserver<WeatherInfo>> observers;
 
-        /// <summary see cref="WeatherData">
+        /// <summary see cref="StatisticReport">
         /// Constructor of class.
         /// </summary>
         public WeatherData()
@@ -26,12 +26,9 @@ namespace ObserverPatternDemo.Implemantation.Observable
         /// <summary>
         /// Method starts running of program.
         /// </summary>
-        /// <param name="time">
-        /// Runtime.
-        /// </param>
-        public void Start(int time)
+        public void Start()
         {
-            Timer work = new Timer(Random, weatherInfo, 0, time);
+            Timer work = new Timer(Random, weatherInfo, 0, 2000);
         }
 
         /// <summary>
@@ -42,6 +39,8 @@ namespace ObserverPatternDemo.Implemantation.Observable
         /// </param>
         public void Unregister(IObserver<WeatherInfo> observer)
         {
+            ValidationData(observer);
+
             observers.Remove(observer);
         }
 
@@ -53,6 +52,8 @@ namespace ObserverPatternDemo.Implemantation.Observable
         /// </param>
         public void Register(IObserver<WeatherInfo> observer)
         {
+            ValidationData(observer);
+
             if (!observers.Contains(observer))
             {
                 observers.Add(observer);
@@ -63,6 +64,8 @@ namespace ObserverPatternDemo.Implemantation.Observable
 
         void IObservable<WeatherInfo>.Notify(WeatherInfo info)
         {
+            ValidationData(info);
+
             foreach (var observer in observers)
             {
                 observer.Update(this, info);
@@ -73,11 +76,29 @@ namespace ObserverPatternDemo.Implemantation.Observable
         {
             WeatherInfo weatherInfo = (WeatherInfo)info;
 
+            ValidationData(weatherInfo);
+
             weatherInfo.Temperature = sensor.Next(-40, 40);
             weatherInfo.Humidity = sensor.Next(0, 100);
             weatherInfo.Pressure = sensor.Next(10, 40);
 
             (this as IObservable<WeatherInfo>).Notify(weatherInfo);
+        }
+
+        private void ValidationData(IObserver<WeatherInfo> observer)
+        {
+            if (ReferenceEquals(observer, null))
+            {
+                throw new ArgumentNullException($"The {nameof(observer)} is null!");
+            }
+        }
+
+        private void ValidationData(WeatherInfo info)
+        {
+            if (ReferenceEquals(info, null))
+            {
+                throw new ArgumentNullException($"The {nameof(info)} is null!");
+            }
         }
         #endregion
     }

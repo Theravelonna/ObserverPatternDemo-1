@@ -24,14 +24,11 @@ namespace ObserverPatternDemo.Implemantation.Observers
         /// <param name="observer">
         /// The observer.
         /// </param>
-        public CurrentConditionsReport(IObservable<WeatherInfo> observer) : this()
+        public CurrentConditionsReport(IObservable<WeatherInfo> sender) : this()
         {
-            if (ReferenceEquals(observer, null))
-            {
-                throw new ArgumentNullException($"The {nameof(observer)} is null!");
-            }
-            
-            observer.Register(this);
+            ValidationData(sender);
+
+            sender.Register(this);
         }
 
         /// <summary>
@@ -45,6 +42,8 @@ namespace ObserverPatternDemo.Implemantation.Observers
         /// </param>
         public void Update(IObservable<WeatherInfo> sender, WeatherInfo info)
         {
+            ValidationData(sender, info);
+
             this.info.Temperature = info.Temperature;
             this.info.Humidity = info.Humidity;
             this.info.Pressure = info.Pressure;
@@ -62,5 +61,29 @@ namespace ObserverPatternDemo.Implemantation.Observers
         {
             return $"Temperature: {info.Temperature}, humidity: {info.Humidity}, pressure: {info.Pressure}";
         }
+
+        #region Private methods
+        private void ValidationData(IObservable<WeatherInfo> sender)
+        {
+            if (ReferenceEquals(sender, null))
+            {
+                throw new ArgumentNullException($"The {nameof(sender)} is null!");
+            }
+        }
+
+        private void ValidationData(WeatherInfo info)
+        {
+            if (ReferenceEquals(info, null))
+            {
+                throw new ArgumentNullException($"The {nameof(info)} is null!");
+            }
+        }
+
+        private void ValidationData(IObservable<WeatherInfo> sender, WeatherInfo info)
+        {
+            ValidationData(sender);
+            ValidationData(info);
+        }
+        #endregion
     }
 }
