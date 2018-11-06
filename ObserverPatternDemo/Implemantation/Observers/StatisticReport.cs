@@ -10,10 +10,7 @@ namespace ObserverPatternDemo.Implemantation.Observers
     public class StatisticReport : IObserver<WeatherInfo>
     {
         private List<WeatherInfo> statistic;
-        private int averageTemperature;
-        private int averageHumidity;
-        private int averagePressure;
-        private IObservable<WeatherInfo> observer;
+        private WeatherInfo averageData;
 
         /// <summary see cref="StatisticReport">
         /// Constructor of class without parametrs.
@@ -21,6 +18,7 @@ namespace ObserverPatternDemo.Implemantation.Observers
         public StatisticReport()
         {
             statistic = new List<WeatherInfo>();
+            averageData = new WeatherInfo();
         }
 
         /// <summary see cref="StatisticReport">
@@ -35,11 +33,10 @@ namespace ObserverPatternDemo.Implemantation.Observers
             {
                 throw new ArgumentNullException($"The {nameof(observer)} is null!");
             }
-
-            this.observer = observer;
+            
             observer.Register(this);
         }
-
+        
         /// <summary>
         /// Method updates data in statistic.
         /// </summary>
@@ -51,9 +48,17 @@ namespace ObserverPatternDemo.Implemantation.Observers
         /// </param>
         public void Update(IObservable<WeatherInfo> sender, WeatherInfo info)
         {
-            statistic.Add(info);
+            WeatherInfo newInfo = new WeatherInfo
+            {
+                Temperature = info.Temperature,
+                Pressure = info.Pressure,
+                Humidity = info.Humidity
+            };
+
+            statistic.Add(newInfo);
 
             CountAverage();
+            Console.WriteLine(ShowData());
         }
 
         /// <summary>
@@ -64,7 +69,7 @@ namespace ObserverPatternDemo.Implemantation.Observers
         /// </returns>
         public string ShowData()
         {
-            return $"Average temperature: {averageTemperature}, average humidity: {averageHumidity}, average pressure: {averagePressure}";
+            return $"Average temperature: {averageData.Temperature}, average humidity: {averageData.Humidity}, average pressure: {averageData.Pressure}";
         }
 
         #region Private methods
@@ -74,9 +79,13 @@ namespace ObserverPatternDemo.Implemantation.Observers
         private void CountAverage()
         {
             int countData = statistic.Count;
-            averageTemperature = Sum((info) => (info.Temperature)) / countData;
-            averageHumidity = Sum((info) => (info.Humidity)) / countData;
-            averagePressure = Sum((info) => (info.Pressure)) / countData;
+            int averageTemperature = Sum(tmp => tmp.Temperature) / countData;
+            int averageHumidity = Sum(tmp => tmp.Humidity) / countData;
+            int averagePressure = Sum(tmp => tmp.Pressure) / countData;
+
+            averageData.Temperature = averageTemperature;
+            averageData.Humidity = averageHumidity;
+            averageData.Pressure = averagePressure;
         }
 
         private int Sum(ValueForSum valueForSum)

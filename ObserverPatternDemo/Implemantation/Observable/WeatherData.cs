@@ -9,9 +9,7 @@ namespace ObserverPatternDemo.Implemantation.Observable
     /// </summary>
     public class WeatherData : IObservable<WeatherInfo>
     {
-        private Random sensorTemperature;
-        private Random sensorHumidity;
-        private Random sensorPressure;
+        private Random sensor;
         private WeatherInfo weatherInfo;
         private List<IObserver<WeatherInfo>> observers;
 
@@ -22,9 +20,7 @@ namespace ObserverPatternDemo.Implemantation.Observable
         {
             observers = new List<IObserver<WeatherInfo>>();
             weatherInfo = new WeatherInfo();
-            sensorTemperature = new Random();
-            sensorHumidity = new Random();
-            sensorPressure = new Random();
+            sensor = new Random();
         }
 
         /// <summary>
@@ -33,14 +29,9 @@ namespace ObserverPatternDemo.Implemantation.Observable
         /// <param name="time">
         /// Runtime.
         /// </param>
-        public void Start(int countIteration)
+        public void Start(int time)
         {
-            int count = 0;
-            while (count < countIteration)
-            {
-                Random();
-                count++;
-            }
+            Timer work = new Timer(Random, weatherInfo, 0, time);
         }
 
         /// <summary>
@@ -70,26 +61,23 @@ namespace ObserverPatternDemo.Implemantation.Observable
 
         #region Private methods
 
-        private void Notify(IObservable<WeatherInfo> sender, WeatherInfo info)
+        void IObservable<WeatherInfo>.Notify(WeatherInfo info)
         {
             foreach (var observer in observers)
             {
-                observer.Update(sender, info);
+                observer.Update(this, info);
             }
         }
 
-        void IObservable<WeatherInfo>.Notify(IObservable<WeatherInfo> sender, WeatherInfo info)
+        private void Random(object info)
         {
-            Notify(this, info);
-        }
+            WeatherInfo weatherInfo = (WeatherInfo)info;
 
-        private void Random()
-        {
-            weatherInfo.Temperature = sensorTemperature.Next(-40, 40);
-            weatherInfo.Humidity = sensorHumidity.Next(0, 100);
-            weatherInfo.Pressure = sensorPressure.Next(10, 40);
+            weatherInfo.Temperature = sensor.Next(-40, 40);
+            weatherInfo.Humidity = sensor.Next(0, 100);
+            weatherInfo.Pressure = sensor.Next(10, 40);
 
-            Notify(this, weatherInfo);
+            (this as IObservable<WeatherInfo>).Notify(weatherInfo);
         }
         #endregion
     }

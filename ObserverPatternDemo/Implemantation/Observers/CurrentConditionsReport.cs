@@ -9,7 +9,6 @@ namespace ObserverPatternDemo.Implemantation.Observers
     public class CurrentConditionsReport : IObserver<WeatherInfo>
     {
         private WeatherInfo info;
-        private IObservable<WeatherInfo> observer;
 
         /// <summary see cref="CurrentConditionsReport">
         /// Constructor of class without parametrs.
@@ -31,8 +30,7 @@ namespace ObserverPatternDemo.Implemantation.Observers
             {
                 throw new ArgumentNullException($"The {nameof(observer)} is null!");
             }
-
-            this.observer = observer;
+            
             observer.Register(this);
         }
 
@@ -50,6 +48,8 @@ namespace ObserverPatternDemo.Implemantation.Observers
             this.info.Temperature = info.Temperature;
             this.info.Humidity = info.Humidity;
             this.info.Pressure = info.Pressure;
+
+            Console.WriteLine(ShowData());
         }
 
         /// <summary>
