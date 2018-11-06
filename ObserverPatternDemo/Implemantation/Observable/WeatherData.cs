@@ -83,16 +83,6 @@ namespace ObserverPatternDemo.Implemantation.Observable
             Notify(this, info);
         }
 
-        void IObservable<WeatherInfo>.Register(IObserver<WeatherInfo> observer)
-        {
-            Register(observer);
-        }
-
-        void IObservable<WeatherInfo>.Unregister(IObserver<WeatherInfo> observer)
-        {
-            Unregister(observer);
-        }
-
         private void Random()
         {
             weatherInfo.Temperature = sensorTemperature.Next(-40, 40);

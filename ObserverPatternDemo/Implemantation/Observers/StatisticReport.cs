@@ -68,10 +68,6 @@ namespace ObserverPatternDemo.Implemantation.Observers
         }
 
         #region Private methods
-        void IObserver<WeatherInfo>.Update(IObservable<WeatherInfo> sender, WeatherInfo info)
-        {
-            Update(sender, info);
-        }
 
         private delegate int ValueForSum(WeatherInfo value);
 

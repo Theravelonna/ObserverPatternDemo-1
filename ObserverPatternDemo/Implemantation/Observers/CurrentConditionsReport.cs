@@ -62,10 +62,5 @@ namespace ObserverPatternDemo.Implemantation.Observers
         {
             return $"Temperature: {info.Temperature}, humidity: {info.Humidity}, pressure: {info.Pressure}";
         }
-
-        void IObserver<WeatherInfo>.Update(IObservable<WeatherInfo> sender, WeatherInfo info)
-        {
-            Update(sender, info);
-        }
     }
 }
