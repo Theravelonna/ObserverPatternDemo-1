@@ -13,17 +13,17 @@ namespace ObserverPatternDemoEvents
         /// </summary>
         public event EventHandler<ChangingWeatherEventArgs> Weather = delegate { };
 
-        protected virtual void OnChangingWeather(object e)
-        {
-            Weather?.Invoke(this, new ChangingWeatherEventArgs());
-        }
-
         /// <summary>
         /// Method creates new event.
         /// </summary>
         public void NewEvent()
         {
             Timer work = new Timer(OnChangingWeather, null, 0, 2000);
+        }
+
+        protected virtual void OnChangingWeather(object e)
+        {
+            Weather?.Invoke(this, new ChangingWeatherEventArgs());
         }
     }
 }
